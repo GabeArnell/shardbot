@@ -1,0 +1,16 @@
+{
+  "name": "binarybot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "github:discordjs/discord.js",
+    "sqlite": "^3.0.6",
+    "vultrex.db": "^1.1.0"
+  }
+}
