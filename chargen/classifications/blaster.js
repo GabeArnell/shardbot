@@ -102,6 +102,10 @@ const effects = [
         pro: ['utility'],
         con: []
     },
+    {name: "alter emotion",
+        pro: ['vitality'],
+        con: []
+    },
 ];
 
 const globes = {
@@ -133,7 +137,7 @@ const particles = {
         "glass",
         "radioactive",
         "fallout",
-        "photons",
+        "glowing",
         "soil",
         "razor",
         "darkness",
@@ -229,21 +233,46 @@ const streams = {
     ]
 }
 
-const shapes = [globes,particles,slivers,beams,blasts,waves,arcs,streams];
+const uniques = {
+    name: "",
+    descriptions: [
+        "chunks of ground",
+        "archaic runes",
+        "chaotic energy",
+        "tentacles",
+    ]
+}
+
+const shapes = [globes,particles,slivers,beams,blasts,waves,arcs,streams,uniques];
 
 const classPros = ['strength','strength','control'];
+
+
+var totalCombinations = []
+for (shape of shapes){
+    for (desc of shape.descriptions){
+        totalCombinations.push([shape.name,desc])
+    }
+}
+
 
 exports.genInfo = () => {
     var info = new Object();
     var effect = effects[Math.floor(Math.random()*effects.length)];
-    var shape = shapes[Math.floor(Math.random()*shapes.length)];
 
-    var description = shape.descriptions[Math.floor(Math.random()*shape.descriptions.length)];
+    var combo = totalCombinations[Math.floor(Math.random()*totalCombinations.length)];
+
+    var shape = combo[0]
+
+    var description = combo[1]
     var source = sources[Math.floor(Math.random()*sources.length)]
 
-    info["power"] = "Fires " + description + " " + shape.name + " from " + source + " that " + effect.name + ".";
+    info["power"] = "Fires " + description + " " + shape + " from " + source + " that " + effect.name + ".";
     info["bonus"] = [[...effect.pro, ...classPros], effect.con];
-    info["shape"] = shape.name;
+    info["shape"] = shape;
+    if (shape == ""){
+        info.shape = description
+    }
     info["description"] = description;
 
     return info;

@@ -112,6 +112,27 @@ const customCapes = {
             ['description']: "fracture fields"
         }
     },
+    // Aaron - Frostpunk
+    ["341575500617089024"]:{
+        name: "Frostpunk",
+        class: "Striker",
+        age: 19,
+        alias: "Akari‌ ‌Kurohi‌ ‌",
+        
+        strength: 5,
+        vitality: 4,
+        utility: 3,
+        control: 4,
+        technique: 5,
+        
+        power: {
+            ['power']: "Creates icy limbs to attack while generating a protective frost nova around themselves.",
+            ['bonus']: ["Technique", "Control"],
+            ['shape']: "ice",
+            ['description']: "frost nova"
+        }
+    },
+    
     // Hyper - Athena
     ["138340069311381505"]:{
         name: "Athena",

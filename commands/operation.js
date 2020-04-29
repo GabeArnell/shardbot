@@ -773,11 +773,13 @@ module.exports.run = async (client, message, args) =>{
     }
 
     var capeInfo = "";
+    const spaceChar = '\xa0'
     for (capeNode of readyCapes){
         var cape = capeNode[0];
         var count = capeNode[1];
+
     
-        capeInfo += `${count} ${cape.name} ${cape.class} | S-${cape.strength} | V-${cape.vitality} | U-${cape.utility} | C-${cape.control} | T-${cape.technique}\n`;
+        capeInfo += `${count}) ${cape.name} ${spaceChar.repeat(20-cape.name.length)} | ${cape.class} | S-${cape.strength} | V-${cape.vitality} | U-${cape.utility} | C-${cape.control} | T-${cape.technique}\n`;
     }
     if (readyCapes.length == 0)
         capeInfo = "No Avalable Capes"
@@ -789,7 +791,7 @@ module.exports.run = async (client, message, args) =>{
     for (capeNode of activeCapes){
         var cape = capeNode[0];
         var count = capeNode[1];
-        capeInfo += `${count} ${cape.name} ${cape.class} (${cape.activity}) | S-${cape.strength} | V-${cape.vitality} | U-${cape.utility} | C-${cape.control} | T-${cape.technique}\n`;
+        capeInfo += `${count}) ${cape.name} ${spaceChar.repeat(20-cape.name.length)}  (${cape.activity}) | ${cape.class} | S-${cape.strength} | V-${cape.vitality} | U-${cape.utility} | C-${cape.control} | T-${cape.technique}\n`;
     }
     if (activeCapes.length == 0)
         capeInfo = "No Active Capes"

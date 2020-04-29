@@ -32,7 +32,7 @@ const effects = [
         pro: ["strength"],
         con: ["vitality"],
     },
-    { name: "twisting space as they move",
+    { name: "twisting space",
         pro: ["strength","control"],
         con: ["technique"],
     },
@@ -60,10 +60,14 @@ const effects = [
         pro: ["strength","strength"],
         con: ["control"],
     },
-    { name: "creating false clones that take other paths but converge at the same end point",
+    { name: "creating illusionary clones that split up and converge",
         pro: ["technique", "control"],
         con: ["strength"],
     },
+    {name: "transporting an entire area",
+        pro: ["control", "control"],
+        con: ["technique"],
+    }
 ]
 
 const short = {
@@ -76,6 +80,8 @@ const short = {
         "powerful leaps",
         "flickering in space",
         "accelerating their personal passage through time",
+        "swapping two objects",
+        "reducing the effect of friction",
     ]
 }
 const long = {
@@ -87,6 +93,7 @@ const long = {
         "reducing the friction of what they run across",
         "bouncing off of surfaces with exactly as much momenteum as they impacted it with",
         "creating launch zones",
+        "firing themselves from an object",
     ]
 }
 const known = {
@@ -96,6 +103,7 @@ const known = {
         "flickering through space",
         "tags they left behind that they can teleport to",
         "swapping places with objects they have touched",
+        "entering a subdimension",
     ]
 }
 const air = {
@@ -108,6 +116,7 @@ const air = {
         "recoil from kinetic blasts"	,
         "levitating platforms",
         "catching the flow of air currents"	,
+        "rapid teleportation"
     ]
 }
 const hazard = {
@@ -118,6 +127,7 @@ const hazard = {
         "liquifying their body",
         "warping personal space",
         "climbing on vertical surfaces",
+        "entering a personal subdimension",
     ]
 }
 
@@ -128,14 +138,27 @@ const obstacles = [short,long,known,air,hazard];
 
 const classPros = ['control','control','technique'];
 
+
+
+var totalCombinations = []
+for (obstacle of obstacles){
+    for (desc of obstacle.descriptions){
+        totalCombinations.push([obstacle.name,desc])
+    }
+}
+
+
 exports.genInfo = () => {
     var info = new Object();
     var effect = effects[Math.floor(Math.random()*effects.length)];
-    var obstacle = obstacles[Math.floor(Math.random()*obstacles.length)];
 
-    var description = obstacle.descriptions[Math.floor(Math.random()*obstacle.descriptions.length)];
+    var combo = totalCombinations[Math.floor(Math.random()*totalCombinations.length)];
+    
+    var obstacle = combo[0]
 
-    info["power"] = "Can move "+obstacle.name+" via  "+description+" while "+effect.name+".";
+    var description = combo[1]
+
+    info["power"] = "Can move "+obstacle+" via  "+description+" while "+effect.name+".";
     info["bonus"] = [[...effect.pro, ...classPros], effect.con];
     info["shape"] = "weapon";
     info["description"] = description;

@@ -25,11 +25,12 @@ module.exports.teamDisplay = function (team){
     .addField("**Network**", team.network, true);
 
     // adding capes
-    var count = 0
-    var info = ""
+    var count = 0;
+    var info = "";
+    const spaceChar = `\xa0`;
     for (cape of team.capes){
-        count++
-        info += `${count} ${cape.name} ${cape.class} | S-${cape.strength} | V-${cape.vitality} | U-${cape.utility} | C-${cape.control} | T-${cape.technique}\n`;
+        count++;
+        info += `${count}) ${cape.name} ${spaceChar.repeat(20-cape.name.length)} | ${cape.class} | S-${cape.strength} | V-${cape.vitality} | U-${cape.utility} | C-${cape.control} | T-${cape.technique}\n`;
     }
     result.addField("**Capes**", info, false);
 

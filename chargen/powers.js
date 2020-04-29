@@ -6,7 +6,7 @@ const classes = [
     "Shaker",
     "Master",
     "Mover",
-    
+    "Changer"
 ]
 
 

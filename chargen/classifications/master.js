@@ -7,7 +7,7 @@ const effects = [
         con: ['control'],
     },
 
-    {name: "explode when they die",
+    {name: "explode upon death",
         pro: ['strength'],
         con: ['vitality']
     },
@@ -90,6 +90,10 @@ const effects = [
         pro: ['vitality', 'vitality'],
         con: ['technique']
     },
+    {name: "absorb the master's wounds",
+        pro: ['vitality'],
+        con: []
+    },
 ];
 
 const desc = [
@@ -133,6 +137,7 @@ const minions = [
     "carnivores",
     "angels",
     "reptiles",
+    "oozes"
 ]
 
 const summons = [

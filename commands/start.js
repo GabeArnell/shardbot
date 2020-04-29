@@ -24,6 +24,15 @@ module.exports.run = async (client, message, args) =>{
         message.reply("You are already playing. To reset your data use 'start RESET' command.");
         return;
     }
+    else if (hasData != 0){
+        for (cape of hasData.capes){
+            if (cape.activity != "none"){
+                message.reply("You can not reset your data while you are on an operation.");
+                return;
+            }
+        }
+    }
+
     
     var teamData = new Object();
     teamData["userid"] = message.author.id;
@@ -43,7 +52,7 @@ module.exports.run = async (client, message, args) =>{
     teammData = customModule.run(teamData,message.author.id);
     
     await teamsDB.set(`${message.author.id}`, teamData);
-    message.reply("new game created");
+    message.reply("New Game Created!");
     message.channel.send(infoModule.teamDisplay(teamData));
     for (cape of teamData.capes){
         capeModule.showData(cape, message);

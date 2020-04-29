@@ -67,7 +67,6 @@ module.exports.run = async (client, message, args) =>{
     
     offer.awaitReactions(filter, { max: 1, time: 5*60*1000, errors: ['time'] })
     .then( async collected =>  {
-        console.log("dropping");
         teamData = await teamsDB.get(`${message.author.id}`, 0);
         if (teamData.capes.length < 2){
             message.reply("Can not drop your last cape!");
@@ -77,13 +76,11 @@ module.exports.run = async (client, message, args) =>{
         for (var i = 0; i < teamData.capes.length; i++){
             const cape = teamData.capes[i];
             if (cape.id == targetId){
-                console.log("searching");
                 if (cape.activity != "none"){
                     message.reply("You can not drop an active cape.");
                 }
                 else{
-                    console.log("found!");
-                    teamData.reputation = math.ceil(teamData.reputation/teamData.capes.length*(teamData.capes.length-1));
+                    teamData.reputation = Math.ceil(teamData.reputation/teamData.capes.length*(teamData.capes.length-1));
                     teamData.capes.splice(i,1); // first element removed
                     await teamsDB.set(`${message.author.id}`, teamData);
                     message.reply("Dropped "+cape.name);
