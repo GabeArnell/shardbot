@@ -14,6 +14,11 @@ const sources = [
     "their glowing aura",
     "their chest",
     "a halo",
+    "anywhere within sight",
+    "a mobile source",
+    "an emplacement turret",
+
+
 ];
 
 const effects = [
@@ -106,6 +111,14 @@ const effects = [
         pro: ['vitality'],
         con: []
     },
+    {name: "create hazard areas upon hit",
+        pro: ['control','strength'],
+        con: ['technique']
+    },
+    {name: "create a temporary clone of the target",
+        pro: ['control'],
+        con: ['technique']
+    },
 ];
 
 const globes = {
@@ -124,7 +137,13 @@ const globes = {
         "black hole",
         "adhessive slime",
         "compressed air",
-        "molten metal"
+        "molten metal",
+        "blood",
+        "bone",
+        "fragile crystal",
+        "frozen time",
+        "gas",
+        "metal",
     ]
 }
 
@@ -136,12 +155,17 @@ const particles = {
         "ash",
         "glass",
         "radioactive",
-        "fallout",
         "glowing",
         "soil",
         "razor",
         "darkness",
+        "disintegration",
+        "crystal",
         "spore",
+        "corrosive",
+        "pain",
+        "electrical static",
+        "dirt",
     ]
 }
 
@@ -151,7 +175,7 @@ const slivers = {
         "steel",
         "light",
         "force",
-        "hlass",
+        "glass",
         "bone",
         "darkness",
         "ice",
@@ -159,6 +183,7 @@ const slivers = {
         "void",
         "fabric",
         "wire",
+
     ]
 }
 
@@ -174,7 +199,8 @@ const beams = {
         "darkness",
         "emotion",
         "radiation",
-        "heat"
+        "heat",
+        "vacuum"
     ]
 }
 
@@ -187,11 +213,19 @@ const blasts = {
         "fire",
         "entropy",
         "darkness",
-        "audio",
+        "sonic",
         "toxic gas",
         "gravity",
         "space distortion",
         "time distortion",
+        "flesh",
+        "blood",
+        "meteorite",
+        "junk",
+        "laser",
+        "gas",
+        "metal",
+        "stasis",
     ]
 }
 
@@ -210,6 +244,12 @@ const waves = {
         'earth',
         'pain',
         'noise',
+        'meat',
+        'EMP',
+        'crystal shard',
+        'skin',
+        'trash',
+        'gas',
     ]
 }
 
@@ -220,6 +260,7 @@ const arcs = {
         'lightning',
         'flashing light',
         'primsatic lights',
+        'warped time'
     ]
 }
 
@@ -230,6 +271,10 @@ const streams = {
         'wind',
         'fire',
         'napalm',
+        'electricity',
+        'blood',
+        'webbing',
+        'gas',
     ]
 }
 
@@ -240,6 +285,9 @@ const uniques = {
         "archaic runes",
         "chaotic energy",
         "tentacles",
+        "random elements",
+        'flechette storms',
+        'parasitic critters',
     ]
 }
 

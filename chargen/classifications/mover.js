@@ -1,6 +1,6 @@
 
 const effects = [
-    { name: "leaves an afterimage",
+    { name: "leaving an afterimage",
         pro: ["vitality"],
         con: [],
     },

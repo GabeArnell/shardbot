@@ -31,13 +31,13 @@ const effects = [
         con: []
     },
 
-    {name: "does not affect themselves",
+    {name: "do not affect themselves",
         pro: ['technique'],
         con: ['utility'],
     },
 
     {name: "spawn from the environment",
-    plural: "spawns from the environment",
+        plural: "spawns from the environment",
         pro: ['control','strength'],
         con: ['technique'],
     },
@@ -231,7 +231,7 @@ const controlOver = {
         "air",
         "space",
         "electricity",
-        "explosions",
+        "explosion",
     ]
 }
 
@@ -261,7 +261,7 @@ exports.genInfo = () => {
 
     var description = combo[1];
     if (shape != "control"){
-        info["power"] = "Generates " + description + " " + shape + " that " + effect.plural + ".";
+        info["power"] = "Generates " + description + " " + shape + " that " + effect.name + ".";
         info["shape"] = shape;
     }
     else{

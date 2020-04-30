@@ -28,9 +28,9 @@ const statBaseline = {
     technique: 3,
 }
 
-function newCape(){
+function newCape(args){
     var cape = new Object();
-    var powerData = genInfo();
+    var powerData = genInfo(args);
 
     cape["name"] = getName();
     cape["class"] = powerData.class;
@@ -97,7 +97,7 @@ function capeDisplay(cape, title){
 
 
 module.exports.run = async (client, message, args ) => {
-    cape = newCape();
+    cape = newCape(args);
     message.reply(capeDisplay(cape, "Random Parahuman"));
 }
 
