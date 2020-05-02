@@ -8,6 +8,7 @@ const classes = [
     "Mover",
     "Changer",
     "Tinker",
+    "Brute"
 ]
 
 

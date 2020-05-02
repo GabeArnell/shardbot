@@ -137,7 +137,8 @@ const minions = [
     "carnivores",
     "angels",
     "reptiles",
-    "oozes"
+    "oozes",
+    "fairies",
 ]
 
 const summons = [

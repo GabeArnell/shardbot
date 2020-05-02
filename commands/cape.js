@@ -17,6 +17,7 @@ const classThemes = {
     ['Shaker']: {['color']: '#40E0D0', ['icon']: "https://i.imgur.com/RcKnK5h.png"},
     ['Master']: {['color']: '#FF61E2', ['icon']: "https://i.imgur.com/ZpiBOzo.png"},
     ['Mover']: {['color']: '#99FF33', ['icon']: "https://i.imgur.com/hIPTu0J.png"},
+    ['Brute']: {['color']: 'RED', ['icon']: "https://i.imgur.com/mQR6w6h.png"},
 }
 //
 //baselines
@@ -103,7 +104,7 @@ module.exports.run = async (client, message, args ) => {
 
 module.exports.help = {
     name: "cape",
-    description: "Generates a random cape. Used for testing purposes.",
+    description: "Generates a random cape. You can specify any of the currently added classes.",
 }
 
 module.exports.requirements = {

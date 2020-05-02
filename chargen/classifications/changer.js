@@ -99,6 +99,7 @@ const forms = [
     "chimeric",
     "avian",
     "beastial",
+    "amphibious",
 ]
 
 const transformations = [

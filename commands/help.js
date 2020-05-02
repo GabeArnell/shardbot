@@ -3,12 +3,11 @@ const { join } = require("path");
 const filePath = join(__dirname,"..","commands");
 const {prefix} = require("../config");
 
-
 function printGeneral(message){
     message.reply(
-        "Welcome to Pocket Capes v0.0\n\n"+
+        "Shardbot v0.0\n\n"+
         
-        "Pocket Capes is a worm idle game where you, the player, manage and grow a team of heros or villains.\n"+
+        "Shardbot is a Worm idle game where you, the player, manage and grow a team of heros or villains.\n"+
         "To start your own game use command `"+prefix+"start` or reset your game with `"+prefix+"start RESET`.\n"+
         "Use `"+prefix+"menu` to see your options and `"+prefix+"stats` for detailed information about your team."
         +
@@ -37,6 +36,11 @@ module.exports.run = (client, message, args) => {
             printFight(message);
             return;
         }
+        var cmd = client.commands.get(arg.toLowerCase())
+        if (cmd){
+            message.reply(cmd.help.name+": "+cmd.help.description);
+        }
+
     }
 }
 
