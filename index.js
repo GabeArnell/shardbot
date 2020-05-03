@@ -23,5 +23,5 @@ bot.login(token);
 
 bot.on('ready', () => {
 bot.channels.cache.get(postchannel).send("Game is online!");
-   operations.setup(bot);
+   //operations.setup(bot);
 })

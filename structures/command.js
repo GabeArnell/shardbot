@@ -8,6 +8,10 @@ module.exports.run = (client) => {
         console.log(`Loaded ${cmd}`);
         
         client.commands.set(prop.help.name, prop);
+        if (prop.setup){
+            prop.setup(client);
+            console.log(prop.help.name+" logged into database.");
+        }
     }
 
     console.log(`Loaded ${client.commands.size} commands!`);

@@ -23,8 +23,7 @@ const questsDB = new VultrexDB({
     table: 'questtable',
     fileName: 'questdatabase'
 })
-teamsDB.connect();
-questsDB.connect();
+
 
 function statCheck(cape, dc, stat){
     var measure = cape[stat]+dc;
@@ -820,6 +819,8 @@ module.exports.run = async (client, message, args) =>{
 }
 
 module.exports.setup = async(client) =>{
+    await teamsDB.connect();
+    await questsDB.connect();
     respondableOps = await questsDB.get("CurrentQuests", []);
     // completing saved quests
     console.log(respondableOps.length+" Backlogged Quests")

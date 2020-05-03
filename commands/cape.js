@@ -3,8 +3,6 @@ const { capeicon } = require('../config');
 const { getName } = require('../chargen/names');
 const {genInfo} = require('../chargen/powers')
 
-// database
-const { VultrexDB } = require("vultrex.db");
 
 // class color themes
 const classThemes = {

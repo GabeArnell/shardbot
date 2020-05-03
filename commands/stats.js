@@ -14,8 +14,6 @@ const teamsDB = new VultrexDB({
     fileName: 'teamdatabase'
 });
 
-teamsDB.connect();
-
 module.exports.teamDisplay = function (team){
     var result = new MessageEmbed()
     .setColor("GREEN")
@@ -80,4 +78,7 @@ module.exports.requirements = {
     clientPerms: ["EMBED_LINKS"],
     userPerms: [],
     ownerOnly: false
+}
+module.exports.setup = async(client) =>{
+    await teamsDB.connect();
 }

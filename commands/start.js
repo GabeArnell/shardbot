@@ -15,8 +15,6 @@ const teamsDB = new VultrexDB({
     fileName: 'teamdatabase'
 });
 
-teamsDB.connect();
-
 module.exports.run = async (client, message, args) =>{
 
     const hasData = await teamsDB.get(`${message.author.id}`, 0);
@@ -69,4 +67,7 @@ module.exports.requirements = {
     clientPerms: [],
     userPerms: [],
     ownerOnly: false
+}
+module.exports.setup = async(client) =>{
+    await teamsDB.connect();
 }

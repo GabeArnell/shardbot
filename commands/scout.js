@@ -15,7 +15,6 @@ const teamsDB = new VultrexDB({
     fileName: 'teamdatabase'
 });
 
-teamsDB.connect();
 module.exports.run = async (client, message, args) =>{
 
     var teamData = await teamsDB.get(`${message.author.id}`, 0);
@@ -85,4 +84,7 @@ module.exports.requirements = {
 module.exports.limits = {
     ratelimit: 3,
     cooldown: 2e4
+}
+module.exports.setup = async(client) =>{
+    await teamsDB.connect();
 }

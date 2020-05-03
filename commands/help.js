@@ -25,6 +25,15 @@ function printFight(message){
     
     )
 }
+function printCredit(message){
+    message.reply("\**Credits**\n"+
+    "**Programmer and Game Designer:** - QuantumToast#7675\n"+
+    "*\n"+
+    "**Project Contributors**\n"+
+    "hyperflare#4131\ngrenade_beam#0022\nOberon#8180\nAaronRyuchi#8171\nSal#2011\n"
+    
+    )
+}
 
 module.exports.run = (client, message, args) => {
     if (!args[0]){
@@ -34,6 +43,10 @@ module.exports.run = (client, message, args) => {
         const arg = args[0]
         if (arg == "combat"){
             printFight(message);
+            return;
+        }
+        if (arg == "credits"){
+            //printCredit(message);
             return;
         }
         var cmd = client.commands.get(arg.toLowerCase())
