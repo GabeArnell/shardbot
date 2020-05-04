@@ -7,11 +7,12 @@ function printGeneral(message){
     message.reply(
         "Shardbot v0.0\n\n"+
         
-        "Shardbot is a Worm idle game where you, the player, manage and grow a team of heros or villains.\n"+
+        "Shardbot is a Worm idle game where you, the player, manage and grow a team of heroes or villains.\n"+
         "To start your own game use command `"+prefix+"start` or reset your game with `"+prefix+"start RESET`.\n"+
         "Use `"+prefix+"menu` to see your options and `"+prefix+"stats` for detailed information about your team."
         +
-        "\n\n"+"For more information type `"+prefix+"help combat` for info on fighting and stats."
+        "\n\n"+"For more information type `"+prefix+"help combat` for info on fighting and stats.\n"+
+        "For updates and suggestions, consider joining the hub server. https://discord.gg/U6vH7NM"
     );
 }
 
@@ -66,4 +67,8 @@ module.exports.requirements = {
     userPerms: [],
     clientPerms: [],
     ownerOnly: false,
+}
+module.exports.limits = {
+    ratelimit: 1,
+    cooldown: 1e10
 }

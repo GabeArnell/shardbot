@@ -44,7 +44,7 @@ const effects = [
         pro: ["control","strength"],
         con: ["technique"],
     },
-    { name: "entering a breaker state for a breif moment",
+    { name: "entering a breaker state for a brief moment",
         pro: ["strength", "strength"],
         con: ["control"],
     },

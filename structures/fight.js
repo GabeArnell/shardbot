@@ -23,23 +23,14 @@ function runRound(capeA, capeB, flavor){
 
     var first, second;
     var woundLevel = "direct";
-    var firstDef, secDef, firstAtk, secAtk
 
     if (statContest(capeA, capeB, 'control')){
         first = capeA;
-        second = capeB;
-        firstDef = flavor.defA;
-        firstAtk = flavor.atkA;
-        secDef = flavor.defB;
-        secAtk = flavor.atkB;
+        second = capeB;  
     }
     else{
         second = capeA;
         first = capeB;
-        firstDef = flavor.defB;
-        firstAtk = flavor.atkB;
-        secDef = flavor.defA;
-        secAtk = flavor.atkA;
     }
     
     // first attack
@@ -50,13 +41,13 @@ function runRound(capeA, capeB, flavor){
     else{
         woundLevel = "direct";
     }
-    info += first.name + " attacks "+second.name+" with their "+flavor.atkA;
+    info += first.name + " attacks "+second.name+" with their "+flavor[first.name+"-atk"];
     if (statContest(first, second, 'technique')){
         info += ` landing a ${woundLevel} blow!\n`;
         second.vitality = second.vitality - first.strength;
     }
     else{
-        info += ` but ${second.name} ${flavor.defB} the attack.\n`;
+        info += ` but ${second.name} ${flavor[second.name+"-def"]} the attack.\n`;
     }
     // second attack
 
@@ -68,13 +59,13 @@ function runRound(capeA, capeB, flavor){
         else{
             woundLevel = "direct";
         }
-        info += second.name + " attacks "+first.name+" with their "+flavor.atkB;
+        info += second.name + " attacks "+first.name+" with their "+flavor[second.name+"-atk"];
         if (statContest(second, first, 'technique')){
             info += ` landing a ${woundLevel} blow!\n`;
             first.vitality = first.vitality - second.strength;
         }
         else{
-            info += ` but ${first.name} ${flavor.defA} the attack.\n`;
+            info += ` but ${first.name} ${flavor[first.name+"-def"]} the attack.\n`;
         }
     }
 
@@ -91,10 +82,10 @@ function runFightText(capeA, capeB, channel){
     var vitalityB = capeB.vitality;
 
     var flavor = {
-        ["atkA"]: capeA.power.shape,
-        ["atkB"]: capeB.power.shape,
-        ['defA']: flavorModule.getDefense(capeA.class),
-        ['defB']: flavorModule.getDefense(capeB.class),
+       [capeA.name+"-atk"]: capeA.power.shape,
+        [capeB.name+"-atk"]: capeB.power.shape,
+        [capeA.name+"-def"]: flavorModule.getDefense(capeA.class),
+        [capeB.name+"-def"]: flavorModule.getDefense(capeB.class),
     }
 
     do{
@@ -127,11 +118,82 @@ function runFightText(capeA, capeB, channel){
 }
 
 
+function findMostPowerful(team,stat){
+    var strongest = team[0];
+    for (var i = 0; i < team.length; i++){
+        if (strongest == null && team[i]["vitality"] > 0){
+            strongest = team[i]
+        }else if (team[i][stat] > strongest[stat]){
+            strongest = team[i];
+        }
+    }
+    return strongest
+}
+function findLeastPowerful(team,stat){
+    var weakest = null;
+    for (var i = 0; i < team.length; i++){
+        if (weakest == null && team[i]["vitality"] > 0){
+            weakest = team[i]
+        }else if (team[i][stat] < weakest[stat]){
+            weakest = team[i];
+        }
+    }
+    return weakest
+}
+
+function runTwoVsTwo(team1, team2,utilityGoal){
+    var team1Vit = [];
+    var team2Vit = [];
+    var flavor = {};
+    var rounds = 0;
+    var text = "";
+
+    var goal = utilityGoal;
+
+    { // saving vitality stats and flavor
+        for (cape of team1){
+            team1Vit.push(cape.vitality);
+            flavor[cape.name+"-atk"] = cape.power.shape;
+            flavor[cape.name+"-def"] = flavorModule.getDefense(cape.class)
+        }
+        for (cape of team2){
+            team2Vit.push(cape.vitality);
+            flavor[cape.name+"-atk"] = cape.power.shape;
+            flavor[cape.name+"-def"] = flavorModule.getDefense(cape.class)
+        }
+    }
+
+    do{
+        rounds++
+        var info = " - Round "+rounds+" - \n";
+
+        var capeA = findMostPowerful(team1, "control");
+        var capeB = findMostPowerful(team2, "control")
+        info+=runRound(capeA,capeB,flavor);
+        capeA = findLeastPowerful(team1, "control");
+        capeB = findLeastPowerful(team2, "control")
+        if (capeA != null && capeB != null){
+            info+=runRound(capeA,capeB,flavor);
+        }
+        
+        if(utilityGoal){
+            if (findMostPowerful(team1, "utility")){
+                
+            }
+        }
+
+
+        text +=info;
+    }
+    while(team1Vit[0]+team1Vit[1] > 1 && team2Vit[0]+team2Vit[1] > 1);
+}
+
+
 module.exports.singleFight = (capeA,capeB) =>{
     return(runFightText(capeA,capeB));
 }
-module.exports.multiFight = (capeA,capeB) =>{
-    return(runFightText(capeA,capeB));
+module.exports.multiFight = (capeA,capeB,utilGoal) =>{
+    return(runTwoVsTwo(capeA,capeB,utilGoal));
 }
 
 module.exports.run = async (client, message, args) =>{

@@ -4,17 +4,11 @@ const filePath = join(__dirname,"..","commands");
 const { MessageEmbed } = require("discord.js");
 const {capeIcon,prefix} = require("../config.js");
 
-//database
-const { VultrexDB, SQLiteProvider } = require("vultrex.db");
-const teamsDB = new VultrexDB({
-    provider: 'sqlite',
-    table: 'usertable',
-    fileName: 'teamdatabase'
-});
+
 
 module.exports.run = async (client, message, args) =>{
 
-    var teamData = await teamsDB.get(`${message.author.id}`, 0);
+    var teamData = await client.teamsDB.get(`${message.author.id}`, 0);
     if (teamData == 0 ) {
         message.reply("You have no data. Use `start` command to begin!");
         return
@@ -49,7 +43,4 @@ module.exports.requirements = {
     clientPerms: ["EMBED_LINKS"],
     userPerms: [],
     ownerOnly: false
-}
-module.exports.setup = async(client) =>{
-    await teamsDB.connect();
 }

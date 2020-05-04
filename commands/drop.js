@@ -5,17 +5,10 @@ const filePath = join(__dirname,"..","commands");
 //modules
 const capeModule = require(`${filePath}/cape.js`)
 
-//database: Key == 
-const { VultrexDB, SQLiteProvider } = require("vultrex.db");
-const teamsDB = new VultrexDB({
-    provider: 'sqlite',
-    table: 'usertable',
-    fileName: 'teamdatabase'
-});
 
 module.exports.run = async (client, message, args) =>{
 
-    var teamData = await teamsDB.get(`${message.author.id}`, 0);
+    var teamData = await client.teamsDB.get(`${message.author.id}`, 0);
     if (teamData == 0 ) {
         message.reply("You have no data. Use `start` command to begin!");
         return;
@@ -31,7 +24,7 @@ module.exports.run = async (client, message, args) =>{
     if (targetCape == "null") {
         for (var cape of teamData.capes)
             
-            if (cape.name.toLowerCase() === (args[0]+" "+args[1]).toLowerCase()  || cape.name.toLowerCase() === args[0].toLowerCase()){
+            if (cape.name.toLowerCase() === args[0].toLowerCase() || cape.name.toLowerCase() === (args[0]+" "+args[1]).toLowerCase()){
                 targetCape = cape;
             }
             if (targetCape == "null"){
@@ -66,7 +59,7 @@ module.exports.run = async (client, message, args) =>{
     
     offer.awaitReactions(filter, { max: 1, time: 5*60*1000, errors: ['time'] })
     .then( async collected =>  {
-        teamData = await teamsDB.get(`${message.author.id}`, 0);
+        teamData = await client.teamsDB.get(`${message.author.id}`, 0);
         if (teamData.capes.length < 2){
             message.reply("Can not drop your last cape!");
             return;
@@ -81,7 +74,7 @@ module.exports.run = async (client, message, args) =>{
                 else{
                     teamData.reputation = Math.ceil(teamData.reputation/teamData.capes.length*(teamData.capes.length-1));
                     teamData.capes.splice(i,1); // first element removed
-                    await teamsDB.set(`${message.author.id}`, teamData);
+                    await client.teamsDB.set(`${message.author.id}`, teamData);
                     message.reply("Dropped "+cape.name);
                     return;
                 }
@@ -102,7 +95,4 @@ module.exports.requirements = {
     clientPerms: [],
     userPerms: [],
     ownerOnly: false
-}
-module.exports.setup = async(client) =>{
-    await teamsDB.connect();
 }

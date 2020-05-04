@@ -7,17 +7,9 @@ const maxCapes = 9;
 //modules
 const capeModule = require(`${filePath}/cape.js`)
 
-//database: Key == 
-const { VultrexDB, SQLiteProvider } = require("vultrex.db");
-const teamsDB = new VultrexDB({
-    provider: 'sqlite',
-    table: 'usertable',
-    fileName: 'teamdatabase'
-});
-
 module.exports.run = async (client, message, args) =>{
 
-    var teamData = await teamsDB.get(`${message.author.id}`, 0);
+    var teamData = await client.teamsDB.get(`${message.author.id}`, 0);
     if (teamData == 0 ) {
         message.reply("You have no data. Use `start` command to begin!");
         return
@@ -32,7 +24,7 @@ module.exports.run = async (client, message, args) =>{
     }
 
     teamData.funds = teamData.funds - 250;
-    await teamsDB.set(`${message.author.id}`, teamData);
+    await client.teamsDB.set(`${message.author.id}`, teamData);
 
 
     // genning cape
@@ -51,7 +43,7 @@ module.exports.run = async (client, message, args) =>{
     
     offer.awaitReactions(filter, { max: 1, time: 5*60*1000, errors: ['time'] })
     .then( async collected =>  {
-        teamData = await teamsDB.get(`${message.author.id}`, 0);
+        teamData = await client.teamsDB.get(`${message.author.id}`, 0);
         if (teamData.capes.length >= maxCapes){
             message.reply("You are at maximum capes already");
             return;
@@ -60,9 +52,9 @@ module.exports.run = async (client, message, args) =>{
         teamData.capes.push(cape);
         cape["id"] = teamData.nextid;
         teamData.nextid++;
-        await teamsDB.set(`${message.author.id}`, teamData);
+        await client.teamsDB.set(`${message.author.id}`, teamData);
 
-        message.channel.send(`Recruited ${cape.name} to ${teamData.name}!`);
+        message.channel.send(`Recruited ${cape.name} to ${teamData.name}!\n You can rename your cape with 'name cape [capeid] newname'`);
     })
     .catch(collected => {
         message.channel.reply('You have not responded in time.');
@@ -72,7 +64,7 @@ module.exports.run = async (client, message, args) =>{
 
 module.exports.help = {
     name: "scout",
-    description: "Adds a random user ",
+    description: "Pay $250 to be offered a new cape recruit. ",
 }
 
 module.exports.requirements = {
@@ -84,7 +76,4 @@ module.exports.requirements = {
 module.exports.limits = {
     ratelimit: 3,
     cooldown: 2e4
-}
-module.exports.setup = async(client) =>{
-    await teamsDB.connect();
 }

@@ -111,8 +111,8 @@ module.exports.requirements = {
     ownerOnly: false
 }
 module.exports.limits = {
-    ratelimit: 2,
-    cooldown: 1e4
+    ratelimit: 1,
+    cooldown: 1e5
 }
 
 //Secondary functions

@@ -6,17 +6,9 @@ const { MessageEmbed } = require("discord.js");
 //modules
 const capeModule = require(`${filePath}/cape.js`)
 
-//database: Key == 
-const { VultrexDB } = require("vultrex.db");
-const teamsDB = new VultrexDB({
-    provider: 'sqlite',
-    table: 'usertable',
-    fileName: 'teamdatabase'
-});
-
 
 module.exports.run = async (client, message, args) =>{
-    var teamData = await teamsDB.get(`${message.author.id}`, 0);
+    var teamData = await client.teamsDB.get(`${message.author.id}`, 0);
     if (teamData == 0 ) {
         message.reply("You have no data. Use `start` command to begin!");
         return
@@ -38,7 +30,7 @@ module.exports.run = async (client, message, args) =>{
 
         teamData.name = name;
         message.reply("Set team name to " + name);
-        await teamsDB.set(`${message.author.id}`, teamData);
+        await client.teamsDB.set(`${message.author.id}`, teamData);
        
     }else if (args[0].toLowerCase() == "team"){
         message.reply("Invalid team name.");
@@ -78,7 +70,7 @@ module.exports.run = async (client, message, args) =>{
         }
         message.reply("Changed " + targetCape.name + "'s name to "+name+".");
         targetCape.name = name;
-        await teamsDB.set(`${message.author.id}`, teamData);
+        await client.teamsDB.set(`${message.author.id}`, teamData);
 
 
     }else if (args[0].toLowerCase() == "cape"){
@@ -100,7 +92,4 @@ module.exports.requirements = {
     clientPerms: [],
     userPerms: [],
     ownerOnly: false
-}
-module.exports.setup = async(client) =>{
-    await teamsDB.connect();
 }

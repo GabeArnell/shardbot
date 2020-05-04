@@ -11,19 +11,6 @@ const { MessageCollector, MessageEmbed} = require("discord.js");
 const capeModule = require(`${filePath}/cape.js`);
 const fightModule = require("../structures/fight.js");
 
-//database: Key == 
-const { VultrexDB, SQLiteProvider } = require("vultrex.db");
-const teamsDB = new VultrexDB({
-    provider: 'sqlite',
-    table: 'usertable',
-    fileName: 'teamdatabase'
-});
-const questsDB = new VultrexDB({
-    provider: "sqlite",
-    table: 'questtable',
-    fileName: 'questdatabase'
-})
-
 
 function statCheck(cape, dc, stat){
     var measure = cape[stat]+dc;
@@ -49,7 +36,7 @@ const patrol = {
     capereq: 1,
     repreq: 0,
     pvp: true,
-    time: 60,
+    time: .5,
     prize: {
         funds: 50,
         reputation: 10,
@@ -388,7 +375,7 @@ const operations = [
     arena,
     patrol,
     mugging,
-    robbery,
+   // robbery,
 ];
 
 
@@ -420,9 +407,8 @@ async function completeOperation(client,op,questObj){
     var display = new MessageEmbed();
     
     //getting update Dataset
-    var teamData = await teamsDB.get(`${questObj.userid}`,0);
-    const userchannel = await client.channels.cache.get(questObj.userchannel);
-    
+    var teamData = await client.teamsDB.get(`${questObj.userid}`,0);
+    const userchannel = client.channels.cache.get(questObj.userchannel);
     //matching new array of capes to their id in case name changes or something
     var updatedCapes = [];
     for (id of questObj.capeids){
@@ -458,7 +444,7 @@ async function completeOperation(client,op,questObj){
     }else{
         console.log("Resolving pvp based operation");
         //getting update dataset of enemy
-        enemyTeamData = await teamsDB.get(`${questObj.enemyid}`,0);
+        enemyTeamData = await client.teamsDB.get(`${questObj.enemyid}`,0);
 
         //matching new array of capes to their id in case name changes or something
         var updatedEnemyCapes = [];
@@ -512,21 +498,30 @@ async function completeOperation(client,op,questObj){
         }
         
 
-        await teamsDB.set(`${questObj.enemyid}`,enemyTeamData);
+        await client.teamsDB.set(`${questObj.enemyid}`,enemyTeamData);
     }
     
     // giving results
-    if (questObj.enemyid != "null" && questObj.userchannel != questObj.enemychannel){
-        console.log("posting on other chat")
-        const enemychannel = await client.channels.cache.get(questObj.enemychannel);
-        enemychannel.send("<@"+questObj.enemyid+"> <@"+questObj.userid+">"+op.name+ " is finished.");
-        enemychannel.send(display);
-
-        userchannel.send(display);
+    if (userchannel){
+        if (questObj.enemyid != "null" && questObj.userchannel != questObj.enemychannel){
+            console.log("posting on other chat")
+            const enemychannel = client.channels.cache.get(questObj.enemychannel);
+            enemychannel.send("<@"+questObj.enemyid+"> "+op.name+ " is finished.");
+            enemychannel.send(display);
+            userchannel.send("<@"+questObj.userid+">"+op.name+ " is finished.");
+            userchannel.send(display);
+        }else{
+            if (questObj.enemyid != "null"){
+                userchannel.send("<@"+questObj.enemyid+"> <@"+questObj.userid+">"+op.name+ " is finished.");
+            }else{
+                userchannel.send("<@"+questObj.userid+"> "+op.name+ " is finished.");
+            }
+            userchannel.send(display);
+        }
     }else{
-        userchannel.send("<@"+questObj.userid+"> "+op.name+ " is finished.");
-        userchannel.send(display);
+        console.log("Could not find user channel. I should PM this to someone")
     }
+    
 
     // removing quest from respondable ops
     if (op.pvp){
@@ -535,11 +530,11 @@ async function completeOperation(client,op,questObj){
                 respondableOps.splice(i,1);
             }
         }
-        await questsDB.set("CurrentQuests", respondableOps);
+        await client.questsDB.set("CurrentQuests", respondableOps);
     }
 
     // saving data
-    await teamsDB.set(`${questObj.userid}`,teamData);
+    await client.teamsDB.set(`${questObj.userid}`,teamData);
 
 }
 
@@ -562,6 +557,9 @@ async function startOp(client, teamData, message, args, response){
 
     if (!response){
         if (op === undefined){ message.reply(args[0] + " is Invalid Operation"); return;}
+        if ((op.repreq > 0 && teamData.reputation < op.repreq) || (op.repreq < 0 && teamData.reputation > op.repreq)){
+            message.reply("You need more reputation before accessing that operation"); return;
+        }
     }else{
         for (testOp of respondableOps){
             if (testOp.questid == args[0])
@@ -622,7 +620,7 @@ async function startOp(client, teamData, message, args, response){
     var info = ""
     for (var i = 0; i < capes.length; i++){
         if (capes.length-1 == i && capes.length != 1){
-            info+= ("and "+capes[i].name);
+            info+= (" and "+capes[i].name);
         }else if (capes.length != 1 && i !=0){
             info+= (capes[i].name+", ");
         }else{
@@ -644,7 +642,7 @@ async function startOp(client, teamData, message, args, response){
         message.channel.send("Responded to "+op.name.toLowerCase()+" with "+info+".");
 
     //Saving cape to active list
-    await teamsDB.set(`${message.author.id}`,teamData);
+    await client.teamsDB.set(`${message.author.id}`,teamData);
 
     if (response){
         op.enemycapeids = activeIDs;
@@ -658,7 +656,7 @@ async function startOp(client, teamData, message, args, response){
         op.message.edit(op.enemyteamname+" have responded to "
         + op.teamname + "'s "+op.name.toLowerCase()+". Results will arrive in " + op.time+ " minutes."
         );
-        await questsDB.set("CurrentQuests", respondableOps);
+        await client.questsDB.set("CurrentQuests", respondableOps);
 
         return;
     }
@@ -668,6 +666,7 @@ async function startOp(client, teamData, message, args, response){
     //op data
     questObj["name"] = op.name;
     questObj["userchannel"] = message.channel.id;
+
     questObj['time'] = op.time;
     //userdata
     questObj['userid'] = teamData.userid;
@@ -699,7 +698,7 @@ async function startOp(client, teamData, message, args, response){
         questObj['message'] = questMsg;
         questObj["questid"] = questId;
         respondableOps.push(questObj);
-        await questsDB.set("CurrentQuests", respondableOps);
+        await client.questsDB.set("CurrentQuests", respondableOps);
     }
 
     //running final result here
@@ -727,7 +726,7 @@ function responseOps(client, message,teamData){
 }
 
 module.exports.run = async (client, message, args) =>{
-    var teamData = await teamsDB.get(`${message.author.id}`, 0);
+    var teamData = await client.teamsDB.get(`${message.author.id}`, 0);
     if (teamData == 0 ) {
         message.reply("You have no data. Use `start` command to begin!");
         return
@@ -799,13 +798,12 @@ module.exports.run = async (client, message, args) =>{
     for (op of operations){
         count++;
         var reqlock = "LOCKED ("+op.repreq+" Rep)";
-        if (teamData.reputation >= op.repreq){
+        if ((op.repreq >= 0 && teamData.reputation >= op.repreq) || (op.repreq <= 0 && teamData.reputation <= op.repreq)){
             reqlock = "";
         }
         display.addField("**"+count+"** - **"+op.name+"**", 
         "Capes Required: " +op.capereq + " "+ reqlock + " | Time: "+(op.time)+" Minutes\n*"+op.info+"*"
         )
-
     }
 
 
@@ -819,9 +817,7 @@ module.exports.run = async (client, message, args) =>{
 }
 
 module.exports.setup = async(client) =>{
-    await teamsDB.connect();
-    await questsDB.connect();
-    respondableOps = await questsDB.get("CurrentQuests", []);
+    respondableOps = await client.questsDB.get("CurrentQuests", []);
     // completing saved quests
     console.log(respondableOps.length+" Backlogged Quests")
     while (respondableOps.length > 0)

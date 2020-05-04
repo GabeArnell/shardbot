@@ -6,14 +6,6 @@ const { MessageEmbed } = require("discord.js");
 //modules
 const capeModule = require(`${filePath}/cape.js`)
 
-//database: Key == 
-const { VultrexDB, SQLiteProvider } = require("vultrex.db");
-const teamsDB = new VultrexDB({
-    provider: 'sqlite',
-    table: 'usertable',
-    fileName: 'teamdatabase'
-});
-
 module.exports.teamDisplay = function (team){
     var result = new MessageEmbed()
     .setColor("GREEN")
@@ -42,7 +34,7 @@ module.exports.teamDisplay = function (team){
 
 
 module.exports.run = async (client, message, args) =>{
-    const teamData = await teamsDB.get(`${message.author.id}`, 0);
+    const teamData = await client.teamsDB.get(`${message.author.id}`, 0);
     if (teamData == 0 ) {
         message.reply("You have no data. Use `start` command to begin!");
         return
@@ -78,7 +70,4 @@ module.exports.requirements = {
     clientPerms: ["EMBED_LINKS"],
     userPerms: [],
     ownerOnly: false
-}
-module.exports.setup = async(client) =>{
-    await teamsDB.connect();
 }
