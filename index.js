@@ -1,6 +1,7 @@
 const {token, prefix, postchannel} = require("./config");
 const {Client, Collection} = require("discord.js");
 const operations = require("./commands/operation.js")
+const shop = require("./commands/shop.js")
 
 const bot = new Client({
     disableEveryone: true,
@@ -19,7 +20,10 @@ const questsDB = new VultrexDB({
     table: 'questtable',
     fileName: 'questdatabase'
 });
+
+
 console.log("booting")
+
 teamsDB.connect().then(()=>{
     console.log("got teamsdb");
     questsDB.connect().then(() => {
@@ -38,10 +42,15 @@ teamsDB.connect().then(()=>{
         
         bot.login(token);
         
-        
         bot.on('ready', () => {
-        bot.channels.cache.get(postchannel).send("Game is online!");
-           operations.setup(bot);
+            //bot.channels.cache.get(postchannel).send("Game is online!");
+            operations.setup(bot);
+            // running shop update loop
+            //bot.user.setActivity(`,help | ,menu`)
+            bot.user.setActivity(`Under Maint`)
+
+            shop.setup(bot);
+            console.log("Set up shop");
         })
     });
 });

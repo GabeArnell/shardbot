@@ -96,6 +96,7 @@ const armor = {
        , 'water'
        , 'ivory'
        , 'plant'
+       , 'space distorting'
     ]
 }
 const shields = {
@@ -122,6 +123,8 @@ const shields = {
        , 'space-warping'
        , 'attracting'
        , 'gas'
+       , 'mental redirection'
+       , 'plasma'
     ]
 }
 const regen = {
@@ -141,7 +144,8 @@ const regen = {
       ,  'self-organizing'
       ,  'fractal'
       ,  'bloody'
-      ,  'ossificative'
+      ,  'ossificating'
+      ,  'fast but weak'
     ]
 }
 
@@ -175,11 +179,12 @@ const resist = {
       ,  'electricity'
       ,  'parahuman ability'
       ,  'mental'
+      ,  'thermal extreme'
     ]
 }
 
 const transformation = {
-    name: "transformation",
+    name: "transformations",
     descriptions: [
         'metal skin'
       ,  'sponge tissue'
@@ -194,7 +199,8 @@ const transformation = {
       ,  'translucent skin'
       ,  'limb addition'
       ,  'redundant organs'
-      ,  'weight manipulation'
+      ,  'weight manipulating'
+      ,  'reactive elemental'
     ]
 }
 
@@ -202,7 +208,6 @@ const transformation = {
 const shapes = [armor,shields,regen,invuln,resist,transformation];
 
 const classPros = ['vitality','vitality','strength'];
-
 
 
 var totalCombinations = []
@@ -225,7 +230,7 @@ exports.genInfo = () => {
     //Protects self through (desc) (shape) (effect).
     info["power"] = "Protects self through "+description+" " + shape+" " +effect.name+".";
     info["bonus"] = [[...effect.pro, ...classPros], effect.con];
-    info["shape"] = "weapon";
+    info["shape"] = "fists";
     info["description"] = description;
 
     return info;

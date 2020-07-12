@@ -23,20 +23,19 @@ module.exports.run = async (client, message, args) =>{
         }
     }
 
-    
     var teamData = new Object();
     teamData["userid"] = message.author.id;
     teamData["name"] = (message.member.nickname || message.member.user.username)+"'s Team";
-    teamData["funds"] = 1000;
+    teamData["funds"] = 100;
     teamData["reputation"] = 0;
     teamData["network"] = 0;
-
+    
     teamData["capes"] = [capeModule.genCape()];
 
 
     teamData["nextid"] = 1; // cape ids
     teamData["activecapes"] = []; // capes on operations
-
+    teamData["armory"] = []//unused weapons
 
     //adding customs if they have them
     teammData = customModule.run(teamData,message.author.id);
@@ -57,7 +56,7 @@ module.exports.help = {
 }
 
 module.exports.requirements = {
-    clientPerms: [],
+    clientPerms: ["EMBED_LINKS"],
     userPerms: [],
     ownerOnly: false
 }

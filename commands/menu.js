@@ -20,13 +20,24 @@ module.exports.run = async (client, message, args) =>{
         .addField("**Funds**", "$"+teamData.funds, true)
         .addField("**Reputation**", teamData.reputation, true)
         
-        .addField("**Statistics**","`"+prefix+"stats` Get an overview on your team stats. Can use `info capename/id` to see specifics.",false)
-        .addField("**Name**","`"+prefix+"name` Rename your team or cape alias.",false)
-        .addField("**Scout**","`"+prefix+"scout` Pay $250 to be offered a random recruit.")
-        .addField("**Drop**","`"+prefix+"drop [capeid]` Remove a cape from your team at the cost of reputation.",false)
-        .addField("**Operation**","`"+prefix+"op` Send a cape or a team of capes on a mission.",false)
-        .addField("**Respond**","`"+prefix+"respond` Send a team to interupt someone else's operation.",false)
-        .addField("**Shop**","`"+prefix+"shop` **[Coming Soon]** Buy gear for your team.",false)
+        .addField("**Team Management**",
+        "`"+prefix+"stats` Get an overview on your team stats.\n`"+prefix+"stats capename/id` to see specifics.\n"+
+        "`"+prefix+"name` Rename your team or cape alias.\n"+
+        "`"+prefix+"scout` Pay $500 to be offered a random recruit.\n"+
+        "`"+prefix+"drop [capeid]` Remove a cape from your team at the cost of reputation.\n",false)
+        
+        .addField("**Missions**",
+        "`"+prefix+"op` Send a cape or a team of capes on a mission.\n"+
+        "`"+prefix+"respond` Send a team to interupt someone else's operation.",false)
+
+        .addField("**Armory**",
+        "`"+prefix+"shop` Check what items are currently being sold. Offers change every 24 hours.\n"+
+        "`"+prefix+"buy [catalog number]` Purchase an item from the shop.\n"+
+        "`"+prefix+"inventory` View your unused items.\n"+
+        "`"+prefix+"give [item id] [cape id]` Give an unused item you own to a cape.\n"+
+        "`"+prefix+"take [cape id]` Return an item the cape was using to your inventory.\n"+
+        "`"+prefix+"trash [item id]` Remove an item from your inventory, no returns.\n"
+        ,false)
 
         /*.addField("Further Information","Use the help command and a following word for details.\n"
         +"\n"

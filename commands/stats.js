@@ -20,7 +20,20 @@ module.exports.teamDisplay = function (team){
     const spaceChar = `\xa0`;
     for (cape of team.capes){
         count++;
-        info += `${count}) ${cape.name} ${spaceChar.repeat(20-cape.name.length)} | ${cape.class} | S-${cape.strength} | V-${cape.vitality} | U-${cape.utility} | C-${cape.control} | T-${cape.technique}\n`;
+        var repeats = 20-cape.name.length;
+        if (repeats < 1){ repeats = 1;}
+        info += "`"+count+") "+cape.name+""+spaceChar.repeat(repeats)
+        if (cape.level){
+            info+=" lv"+cape.level
+        }
+        //cape.class+
+        info+=
+        " | STR-"+cape.strength+
+        " | VIT-"+cape.vitality+
+        " | UTL-"+cape.utility+
+        " | CTR-"+cape.control+
+        " | TEQ-"+cape.technique+
+        "`\n";
     }
     result.addField("**Capes**", info, false);
 
@@ -28,6 +41,7 @@ module.exports.teamDisplay = function (team){
     "Funds: How much money you currently have.\nReputation: How your group is seen. Higher is heroic, lower is villainous.\nNetwork: How well connected you are. Ability to find new capes.\n"+
     "stats [id/name] to get specific cape information", false);
 
+    result.setFooter(`Use command ",help combat" for further info on stats.`)
     return result;
 }
 

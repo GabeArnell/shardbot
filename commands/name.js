@@ -36,6 +36,12 @@ module.exports.run = async (client, message, args) =>{
         message.reply("Invalid team name.");
     }
 
+    var baseOffset = 0;
+    if (message.content.substring(0,3) == ",n "){
+        baseOffset = -3
+    }else if (message.content.substring(0,7) == ',rename'){
+        baseOffset = +2
+    }
     // naming capes
     if (args[0].toLowerCase() == "cape" && args[1]){
         var targetCape = teamData.capes[args[1]-1] || "null"
@@ -47,23 +53,26 @@ module.exports.run = async (client, message, args) =>{
 
         // if they typed the name of the cape
         if (targetCape == "null") {
-            console.log("searching for name");
-            for (var cape of teamData.capes)
-                console.log(message.content.substring(11, 11+cape.name.length));
-                console.log(cape.name);
-                if (cape.name.toLowerCase() === (args[1]+" "+args[2]).toLowerCase() || cape.name.toLowerCase() === (args[1]).toLowerCase()){
+            //console.log("searching for name");
+            for (var i = 0; i <teamData.capes.length; i++){
+                var cape = teamData.capes[i];
+                var choppedName = (message.content.substring(11+baseOffset, 11+baseOffset+cape.name.length));
+                //console.log(cape.name+"-"+choppedName);
+                if (choppedName.toLowerCase() === cape.name.toLowerCase()){
                     targetCape = cape;
                     offset = cape.name.length+1;
-                    console.log("found!");
-                }     
+                }
+            }
         }
         
         if (targetCape == "null"){
             message.reply("Could not identity cape."); 
             return;
         }
+        //,name cape (offset)
 
-        const name = message.content.substring(11+offset);
+        
+        const name = message.content.substring(11+baseOffset+offset);
         if (name.length > 20){
             message.reply("Name is too long. Max is 20 characters."); 
             return;
@@ -73,7 +82,8 @@ module.exports.run = async (client, message, args) =>{
         await client.teamsDB.set(`${message.author.id}`, teamData);
 
 
-    }else if (args[0].toLowerCase() == "cape"){
+    }
+    else if (args[0].toLowerCase() == "cape"){
         message.reply("needs a second argument. Either the cape's name or their number");
     }
      

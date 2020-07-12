@@ -142,7 +142,7 @@ const customCapes = {
 
         strength: 3,
         vitality: 4,
-        utility: 4,
+        utility: 5,
         control: 6,
         technique: 6,
         
@@ -192,12 +192,29 @@ const customCapes = {
         ['shape']: "vynl slicers",
         ['description']: "music waves"
     },
-},
+    },
     
+    //  Jellysnake - Crystalclear (for bughunting)
+    ["99372840192589824"]:{
+        name: "Crystalclear",
+        class: "Thinker",
+        age: 24,
+        alias: "Crystalclear",
+    
+        strength: 4,
+        vitality: 4,
+        utility: 6,
+        control: 6,
+        technique: 5,
+        
+        power: {
+            ['power']: "Shoots exploding crystal shards that pass through barriers and can see through solid objects.",
+            ['bonus']: ["Control", "Strength"],
+            ['shape']: "crystal blasts",
+            ['description']: "crystaline vision"
+        },
+        },
 }
-
-
-
 
 
 function getCapeData(data){

@@ -5,11 +5,26 @@ const shortcuts = {
     ['c']: "cape",
     ["operation"]: "op",
     ["respond"]: "op",
+    ["abort"]: "op",
+
     ["rename"]: "name",
     ["n"]: "name",
     ["s"]: "stats",
+    ["team"]: "stats",
     ["stat"]: "stats",
-    ["statistics"]: "stats"
+    ["statistics"]: "stats",
+    
+    ["buy"]: "shop",
+    ["catalog"]: "shop",
+    ["i"]: "inventory",
+    ["inv"]: "inventory",
+    ["inv"]: "inventory",
+    ["armory"]: "inventory",
+    ["give"]: "inventory",
+    ["equip"]: "inventory",
+    ["take"]: "inventory",
+    ["unequip"]: "inventory",
+    ["trash"]: "inventory",
 }
 module.exports = async (client, message) => {
     if (message.author.bot) return; // eliminating bots
@@ -54,6 +69,12 @@ module.exports = async (client, message) => {
             client.limits.delete(`${command}-${message.author.id}`);
         }, cmd.limits.cooldown)
     }
+
+    if (args[0] && args[0].toLowerCase() == "help"){
+        message.reply(cmd.help.description);
+        return;
+    }
+
     cmd.run(client, message, args);
 }
 

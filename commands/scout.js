@@ -3,7 +3,7 @@ const { join } = require("path");
 const filePath = join(__dirname,"..","commands");
 
 const maxCapes = 9;
-
+const basePrice = 500;
 //modules
 const capeModule = require(`${filePath}/cape.js`)
 
@@ -18,12 +18,12 @@ module.exports.run = async (client, message, args) =>{
         message.reply("You are at maximum capes already");
         return;
     }
-    if (teamData.funds < 250){
-        message.reply("Your funds are too low. Scouting requires $250.");
+    if (teamData.funds < 500){
+        message.reply("Your funds are too low. Scouting requires $"+basePrice+".");
         return;
     }
 
-    teamData.funds = teamData.funds - 250;
+    teamData.funds = teamData.funds - basePrice;
     await client.teamsDB.set(`${message.author.id}`, teamData);
 
 
@@ -51,12 +51,13 @@ module.exports.run = async (client, message, args) =>{
         //saving data
         teamData.capes.push(cape);
         cape["id"] = teamData.nextid;
+        cape["level"] = 1;
         teamData.nextid++;
         await client.teamsDB.set(`${message.author.id}`, teamData);
 
         message.channel.send(`Recruited ${cape.name} to ${teamData.name}!\n You can rename your cape with 'name cape [capeid] newname'`);
     })
-    .catch(collected => {
+    .catch(async collected => {
         message.channel.reply('You have not responded in time.');
     });
 
@@ -64,11 +65,11 @@ module.exports.run = async (client, message, args) =>{
 
 module.exports.help = {
     name: "scout",
-    description: "Pay $250 to be offered a new cape recruit. ",
+    description: "Pay $"+basePrice+" to be offered a new cape recruit. ",
 }
 
 module.exports.requirements = {
-    clientPerms: [],
+    clientPerms: ["EMBED_LINKS"],
     userPerms: [],
     ownerOnly: false
 }

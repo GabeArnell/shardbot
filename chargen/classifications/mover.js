@@ -160,7 +160,7 @@ exports.genInfo = () => {
 
     info["power"] = "Can move "+obstacle+" via  "+description+" while "+effect.name+".";
     info["bonus"] = [[...effect.pro, ...classPros], effect.con];
-    info["shape"] = "weapon";
+    info["shape"] = "fists";
     info["description"] = description;
 
     return info;

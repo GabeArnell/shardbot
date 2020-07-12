@@ -159,7 +159,7 @@ const methods = [
     "self experimentation",
 ]
 
-const classPros = ['utility','utility','control'];
+const classPros = ['utility','control','utility'];
 
 exports.genInfo = () => {
     var info = new Object();

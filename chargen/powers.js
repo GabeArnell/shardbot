@@ -8,7 +8,11 @@ const classes = [
     "Mover",
     "Changer",
     "Tinker",
-    "Brute"
+    "Brute",
+    "Stranger",
+    "Breaker",
+    "Thinker",
+    "Striker"
 ]
 
 

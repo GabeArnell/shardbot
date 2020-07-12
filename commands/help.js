@@ -20,10 +20,12 @@ function printFight(message){
     message.reply("\nStats\n"+
     "**Strength** - Cape's attack value. When they land a hit they subtract strength from the target's Vitality\n"+
     "**Vitality** - Cape's hit points. When vitality hits zero the cape is defeated.\n"+
-    "**Utility** - Cape's mission effectiveness. Higher utility capes complete objectives faster.\n"+
+    "**Utility** - Cape's mission effectiveness. The higher utility the better chance of a successful mission.\n"+
     "**Control** - Cape's battlefield influence. Contributes to determining initiative each round.\n"+
-    "**Technique** - Cape's fighting skill. Increases chance to hit and dodge attacks.\n\n"
-    
+    "**Technique** - Cape's fighting skill. Increases chance to hit and dodge attacks.\n\n"+
+    "Contests\n"+
+    "Stats are contested through probability ratio compared to the enemy.\n"+
+    "For example: A cape with 4 control against a cape with 6 control wins 40% (4/(4+6)) of the time."
     )
 }
 function printCredit(message){
@@ -64,7 +66,7 @@ module.exports.help = {
 }
 
 module.exports.requirements = {
-    userPerms: [],
+    userPerms: ["EMBED_LINKS"],
     clientPerms: [],
     ownerOnly: false,
 }

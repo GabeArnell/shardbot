@@ -105,7 +105,7 @@ const desc = [
     "rampaging",
     "phantasmal",
     "shining",
-    "swarm of",
+    "swarms of",
     "customizable",
     "flaming",
     "frozen",
