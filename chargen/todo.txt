@@ -1,0 +1,8 @@
+MAKE A DOCUMENT FOR ALL THE TESTS
+
+
+
+
+Later:
+Have the html format for the code input rework so its actually similar to a text editor
+I want to bold/recolor specific keywords
